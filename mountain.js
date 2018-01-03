@@ -3,7 +3,7 @@ function mountain(x, y, len, off) {
   this.posY = y;
   this.sideLength = len;
   this.offset = off;
-  this.velocity = 0.1;
+  this.velocity = 2;
 
   this.update = function() {
     this.posX -= this.velocity;
@@ -11,7 +11,16 @@ function mountain(x, y, len, off) {
 
   this.show = function() {
     noFill();
-    stroke(0, 255, 0);
-    triangle(this.posX, this.posY, this.posX - this.sideLength, this.posY + this.sideLength, this.posX + this.sideLength, this.posY + this.sideLength);
+    stroke(139, 69, 19);
+    strokeWeight(2);
+    triangle(this.posX, this.posY, this.posX - this.sideLength / this.offset, this.posY + this.sideLength, this.posX + this.sideLength / this.offset, this.posY + this.sideLength);
+  }
+
+  this.offScreen = function() {
+    if ((this.posX + this.sideLength / this.offset) < 0) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
