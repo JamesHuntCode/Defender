@@ -12,7 +12,7 @@ function mountain(x, y, len, off) {
   this.show = function() {
     noFill();
     stroke(139, 69, 19);
-    strokeWeight(2);
+    strokeWeight(1);
     triangle(this.posX, this.posY, this.posX - this.sideLength / this.offset, this.posY + this.sideLength, this.posX + this.sideLength / this.offset, this.posY + this.sideLength);
   }
 
