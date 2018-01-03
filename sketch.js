@@ -4,20 +4,25 @@ var player;
 
 function setup() {
   createCanvas(600, 400);
+
   // Add initial terrain
   mountainOffset = 0;
-  for (let i = 0; i < 50; i++) {
+  for (let i = 0; i < 30; i++) {
     addNewMountain();
   }
+
   // Initialize player icon
   player = new playerIcon(width / 2, height / 3);
 }
 
 function draw() {
   background(51);
+
   // Draw player
   player.show();
   player.updatePos();
+  player.teleport();
+
   // Draw terrain
   for (let i = 0; i < mountains.length; i++) {
     mountains[i].update();
@@ -28,8 +33,10 @@ function draw() {
   for (let i = 0; i < mountains.length; i++) {
     if (mountains[i].offScreen()) {
       mountains.splice(i, 1);
-      for (let j = 0; j < 10; j++) {
-        addNewMountain();
+      if (mountains.length < 300) {
+        for (let j = 0; j < 5; j++) {
+          addNewMountain();
+        }
       }
     }
   }
@@ -40,16 +47,16 @@ function keyPressed() {
   if (key != ' ') {
     switch(keyCode) {
       case UP_ARROW:
-        player.posY -= 20;
+        player.yVelocity = -5;
       break;
       case DOWN_ARROW:
-        player.posY += 20;
+        player.yVelocity = 5;
       break;
       case LEFT_ARROW:
-        player.velocity = -5;
+        player.xVelocity = -5;
       break;
       case RIGHT_ARROW:
-        player.velocity = 5;
+        player.xVelocity = 5;
       break;
     }
   } else {
@@ -61,11 +68,17 @@ function keyPressed() {
 
 function keyReleased() {
   switch(keyCode) {
+    case UP_ARROW:
+      player.yVelocity = 0;
+    break;
+    case DOWN_ARROW:
+      player.yVelocity = 0;
+    break;
     case LEFT_ARROW:
-      player.velocity = 0;
+      player.xVelocity = 0;
     break;
     case RIGHT_ARROW:
-      player.velocity = 0;
+      player.xVelocity = 0;
     break;
   }
   return false;
@@ -73,9 +86,9 @@ function keyReleased() {
 
 // Method to add a new mountain at a specified x and y location
 function addNewMountain() {
-  var peak = random(height / 2, height);
+  var peak = random(height / 3, height);
   var slope = random(1, 4);
   var length = height - peak;
-  mountains.push(new mountain(mountainOffset, peak + 10, length, slope));
+  mountains.push(new mountain(mountainOffset, peak, length, slope));
   mountainOffset += length / slope;
 }

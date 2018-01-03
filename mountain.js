@@ -3,7 +3,7 @@ function mountain(x, y, len, off) {
   this.posY = y;
   this.sideLength = len;
   this.offset = off;
-  this.velocity = 2;
+  this.velocity = 3;
 
   this.update = function() {
     this.posX -= this.velocity;
@@ -22,5 +22,9 @@ function mountain(x, y, len, off) {
     } else {
       return false;
     }
+  }
+
+  this.hitsPlayer = function() {
+    
   }
 }
