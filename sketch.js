@@ -17,6 +17,7 @@ function draw() {
   background(51);
   // Draw player
   player.show();
+  player.updatePos();
   // Draw terrain
   for (let i = 0; i < mountains.length; i++) {
     mountains[i].update();
@@ -39,23 +40,35 @@ function keyPressed() {
   if (key != ' ') {
     switch(keyCode) {
       case UP_ARROW:
-        player.move("up");
+        player.posY -= 20;
       break;
       case DOWN_ARROW:
-        player.move("down");
+        player.posY += 20;
       break;
       case LEFT_ARROW:
-        player.move("left");
+        player.velocity = -5;
       break;
       case RIGHT_ARROW:
-        player.move("right");
+        player.velocity = 5;
       break;
     }
   } else {
       if (key === ' ') {
-        console.log("PEW PEW!");
+        console.log("Shot fired");
     }
   }
+}
+
+function keyReleased() {
+  switch(keyCode) {
+    case LEFT_ARROW:
+      player.velocity = 0;
+    break;
+    case RIGHT_ARROW:
+      player.velocity = 0;
+    break;
+  }
+  return false;
 }
 
 // Method to add a new mountain at a specified x and y location
