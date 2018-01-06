@@ -1,14 +1,14 @@
-var mountains = [];
-var mountainOffset;
 var player;
+var terrainPoints = [];
 
 function setup() {
   createCanvas(600, 400);
 
   // Add initial terrain
-  mountainOffset = 0;
-  for (let i = 0; i < 30; i++) {
-    addNewMountain();
+  var off = 0;
+  for (let i = 0; i < 50; i++) {
+    terrainPoints[i] = new terrainPoint(off, random(height / 2, height));
+    off += 50;
   }
 
   // Initialize player icon
@@ -21,23 +21,22 @@ function draw() {
   // Draw player
   player.show();
   player.updatePos();
-  player.teleport();
 
   // Draw terrain
-  for (let i = 0; i < mountains.length; i++) {
-    mountains[i].update();
-    mountains[i].show();
+  stroke(139, 69, 19);
+  beginShape();
+  for (let i = 0; i < terrainPoints.length; i++) {
+    terrainPoint[i] = vertex(terrainPoints[i].posX, terrainPoints[i].posY);
   }
+  endShape();
+  noStroke();
 
-  // Dynamically add more mountains as they leave the screen
-  for (let i = 0; i < mountains.length; i++) {
-    if (mountains[i].offScreen()) {
-      mountains.splice(i, 1);
-      if (mountains.length < 300) {
-        for (let j = 0; j < 5; j++) {
-          addNewMountain();
-        }
-      }
+  for (let i = 0; i < terrainPoints.length; i++) {
+    terrainPoints[i].update();
+
+    if (terrainPoints[i].needsRemoving()) {
+      terrainPoints.splice(i, 1);
+      terrainPoints.push(new terrainPoint(terrainPoints[terrainPoints.length - 1].posX + 50, random(height / 2, height)));
     }
   }
 }
@@ -82,13 +81,4 @@ function keyReleased() {
     break;
   }
   return false;
-}
-
-// Method to add a new mountain at a specified x and y location
-function addNewMountain() {
-  var peak = random(height / 3, height);
-  var slope = random(1, 4);
-  var length = height - peak;
-  mountains.push(new mountain(mountainOffset, peak, length, slope));
-  mountainOffset += length / slope;
 }
