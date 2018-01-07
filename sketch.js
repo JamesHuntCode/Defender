@@ -1,18 +1,25 @@
 var player;
 var terrainPoints = [];
+var enemies = [];
 
 function setup() {
   createCanvas(600, 400);
 
   // Add initial terrain
-  var off = 0;
+  var gap = 0;
   for (let i = 0; i < 50; i++) {
-    terrainPoints[i] = new terrainPoint(off, random(height / 2, height));
-    off += 50;
+    terrainPoints[i] = new terrainPoint(gap, random(height / 1.5, height));
+    gap += 50;
   }
 
   // Initialize player icon
   player = new playerIcon(width / 2, height / 3);
+
+  // Initialize enemy ships
+  for (let i = 0; i < 3; i++) {
+    var randomY = random(10, height / 2);
+    enemies[i] = new enemyShip(width - 10, randomY);
+  }
 }
 
 function draw() {
@@ -21,6 +28,12 @@ function draw() {
   // Draw player
   player.show();
   player.updatePos();
+
+  // Draw enemies
+  for (let i = 0; i < enemies.length; i++) {
+    enemies[i].update();
+    enemies[i].show();
+  }
 
   // Draw terrain
   stroke(139, 69, 19);
@@ -36,7 +49,7 @@ function draw() {
 
     if (terrainPoints[i].needsRemoving()) {
       terrainPoints.splice(i, 1);
-      terrainPoints.push(new terrainPoint(terrainPoints[terrainPoints.length - 1].posX + 50, random(height / 2, height)));
+      terrainPoints.push(new terrainPoint(terrainPoints[terrainPoints.length - 1].posX + 50, random(height / 1.5, height)));
     }
   }
 }
@@ -53,14 +66,16 @@ function keyPressed() {
       break;
       case LEFT_ARROW:
         player.xVelocity = -5;
+        player.rotate("left");
       break;
       case RIGHT_ARROW:
         player.xVelocity = 5;
+        player.rotate("right");
       break;
     }
   } else {
       if (key === ' ') {
-        console.log("Shot fired");
+        // create bullet moving towards enemy ship
     }
   }
 }

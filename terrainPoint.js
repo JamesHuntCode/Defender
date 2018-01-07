@@ -1,7 +1,7 @@
 function terrainPoint(x, y) {
   this.posX = x;
   this.posY = y;
-  this.velocity = 3;
+  this.velocity = 2;
 
   this.update = function() {
     this.posX -= this.velocity;
