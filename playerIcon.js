@@ -23,6 +23,18 @@ function playerIcon(x, y) {
     this.posY += this.yVelocity;
   }
 
+  this.boundaries = function() {
+    if (this.posY < 65) {
+      this.yVelocity = 0;
+    }
+
+    if (this.posX + this.sideLength < 0) {
+      this.posX = width + this.sideLength;
+    } else if (this.posX - this.sideLength > width) {
+      this.posX = -this.sideLength;
+    }
+  }
+
   this.rotate = function(direction) {
     if (direction === "left") {
       if (this.facing != "left") {

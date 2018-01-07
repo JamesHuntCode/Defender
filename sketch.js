@@ -1,6 +1,13 @@
 var player;
+var playerLasers = [];
+var playerScore = 0;
+
 var terrainPoints = [];
+
 var enemies = [];
+var enemyLasers = [];
+
+var obstacles = [];
 
 function setup() {
   createCanvas(600, 400);
@@ -17,17 +24,22 @@ function setup() {
 
   // Initialize enemy ships
   for (let i = 0; i < 3; i++) {
-    var randomY = random(10, height / 2);
+    var randomY = random(60, height / 2);
     enemies[i] = new enemyShip(width - 10, randomY);
   }
 }
 
 function draw() {
   background(51);
+  stroke(255);
+  var margin = 30;
+  text("SCORE: " + playerScore, margin, margin);
+  line(0, 50, width, 50);
 
   // Draw player
   player.show();
   player.updatePos();
+  player.boundaries();
 
   // Draw enemies
   for (let i = 0; i < enemies.length; i++) {
@@ -37,7 +49,7 @@ function draw() {
   }
 
   for (let i = 0; i < enemies.length; i++) {
-
+    
   }
 
   // Draw terrain
