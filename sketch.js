@@ -23,11 +23,12 @@ function setup() {
   // Initialize enemy ships
   for (let i = 0; i < 3; i++) {
     var randomY = random(60, height / 2);
-    enemies[i] = new enemyShip(width - 10, randomY);
+    enemies[i] = new enemyShip(width + 20, randomY);
   }
 }
 
 function draw() {
+  // Draw canvas and create score tracker
   background(51);
   stroke(255);
   var margin = 30;
@@ -45,9 +46,17 @@ function draw() {
     playerLasers[i].show();
   }
 
+  // Check if player laser is off the screen
   for (let i = 0; i < playerLasers.length; i++) {
     if (playerLasers[i].offScreen()) {
       playerLasers.splice(i, 1);
+    }
+
+    // Check if player laser has hit an enemy ship
+    for (let j = 0; j < enemies.length; j++) {
+      if (playerLasers[i].hitsEnemy(enemies[j])) {
+        // destroy enemy ship...
+      }
     }
   }
 
@@ -58,6 +67,7 @@ function draw() {
     enemies[i].boundaries();
   }
 
+  // Check if enemy can fire a shot at player
   for (let i = 0; i < enemies.length; i++) {
     if (enemies[i].hasClearShotAt(player)) {
       var calculatedVel;
@@ -66,10 +76,24 @@ function draw() {
       } else {
         calculatedVel = 10;
       }
-      if (Math.floor(Math.random()*50) === 25) {
-        enemyLasers.push(new enemyLaser(enemies[i].posX, enemies[i].posY, calculatedVel));
+      // After calculation, add a level of chance
+      if (Math.floor(Math.random() * 100) === 50) {
+        if (enemies[i].velocity > 0) {
+          if (enemies[i].posX > player.posX) {
+            enemyLasers.push(new enemyLaser(enemies[i].posX, enemies[i].posY, calculatedVel));
+          }
+        } else {
+          if (enemies[i].posX < player.posX) {
+            enemyLasers.push(new enemyLaser(enemies[i].posX, enemies[i].posY, calculatedVel));
+          }
+        }
       }
     }
+  }
+
+  // Add more spaceships over time
+  if (Math.floor(Math.random() * 400) === 50) {
+    enemies.push(new enemyShip(width + 20, random(60, height / 2)));
   }
 
   // Draw enemy lasers
@@ -78,6 +102,7 @@ function draw() {
     enemyLasers[i].show();
   }
 
+  // Check if enemy lasers are still on the screen
   for (let i = 0; i < enemyLasers.length; i++) {
     if (enemyLasers[i].offScreen()) {
       enemyLasers.splice(i, 1);
@@ -97,6 +122,7 @@ function draw() {
   for (let i = 0; i < terrainPoints.length; i++) {
     terrainPoints[i].update();
 
+    // When terrain point moves off the screen, remove it
     if (terrainPoints[i].needsRemoving()) {
       terrainPoints.splice(i, 1);
       terrainPoints.push(new terrainPoint(terrainPoints[terrainPoints.length - 1].posX + 50, random(height / 1.5, height)));
@@ -105,6 +131,7 @@ function draw() {
 }
 
 // Method handling player movements
+// Player to move constantly until key is no longer being held down
 function keyPressed() {
   if (key != ' ') {
     switch(keyCode) {

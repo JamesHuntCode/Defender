@@ -15,7 +15,7 @@ function playerLaser(x, y, v) {
   }
 
   this.hitsEnemy = function(enemy) {
-
+    
   }
 
   this.offScreen = function() {

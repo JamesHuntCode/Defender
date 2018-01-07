@@ -3,9 +3,14 @@ function enemyShip(x, y) {
   this.posY = y;
   this.sideLength = 15;
   this.velocity = random(-5, 5);
+  this.facing;
 
-  if (this.velocity === 0) {
-    this.velocity = 3;
+  if (this.velocity > -2 && this.velocity < 2) {
+    if (Math.random() > 0.5) {
+      this.velocity = -3;
+    } else {
+      this.velocity = 3;
+    }
   }
 
   if (this.velocity > 0) {
