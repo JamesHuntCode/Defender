@@ -1,7 +1,7 @@
 function playerIcon(x, y) {
   this.posX = x;
   this.posY = y;
-  this.sideLength = 20;
+  this.sideLength = 15;
   this.xVelocity = 0;
   this.yVelocity = 0;
   this.facing = "right"

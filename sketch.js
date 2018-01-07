@@ -33,6 +33,11 @@ function draw() {
   for (let i = 0; i < enemies.length; i++) {
     enemies[i].update();
     enemies[i].show();
+    enemies[i].boundaries();
+  }
+
+  for (let i = 0; i < enemies.length; i++) {
+
   }
 
   // Draw terrain
@@ -59,17 +64,17 @@ function keyPressed() {
   if (key != ' ') {
     switch(keyCode) {
       case UP_ARROW:
-        player.yVelocity = -5;
+        player.yVelocity = -7;
       break;
       case DOWN_ARROW:
-        player.yVelocity = 5;
+        player.yVelocity = 7;
       break;
       case LEFT_ARROW:
-        player.xVelocity = -5;
+        player.xVelocity = -7;
         player.rotate("left");
       break;
       case RIGHT_ARROW:
-        player.xVelocity = 5;
+        player.xVelocity = 7;
         player.rotate("right");
       break;
     }
