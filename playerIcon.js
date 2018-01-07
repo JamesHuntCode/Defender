@@ -4,7 +4,7 @@ function playerIcon(x, y) {
   this.sideLength = 15;
   this.xVelocity = 0;
   this.yVelocity = 0;
-  this.facing = "right"
+  this.facing = "right";
 
   this.show = function() {
     stroke(0, 255, 0);

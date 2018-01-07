@@ -36,4 +36,12 @@ function enemyShip(x, y) {
       triangle(this.posX, this.posY, this.posX - this.sideLength * 1.5, this.posY - this.sideLength / 2, this.posX - this.sideLength * 1.5, this.posY + this.sideLength / 2);
     }
   }
+
+  this.hasClearShotAt = function(player) {
+    if ((this.posY > (player.posY - 20)) && (this.posY < player.posY + 20)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

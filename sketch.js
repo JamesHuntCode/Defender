@@ -7,8 +7,6 @@ var terrainPoints = [];
 var enemies = [];
 var enemyLasers = [];
 
-var obstacles = [];
-
 function setup() {
   createCanvas(600, 400);
 
@@ -41,6 +39,18 @@ function draw() {
   player.updatePos();
   player.boundaries();
 
+  // Draw player player's lasers
+  for (let i = 0; i < playerLasers.length; i++) {
+    playerLasers[i].update();
+    playerLasers[i].show();
+  }
+
+  for (let i = 0; i < playerLasers.length; i++) {
+    if (playerLasers[i].offScreen()) {
+      playerLasers.splice(i, 1);
+    }
+  }
+
   // Draw enemies
   for (let i = 0; i < enemies.length; i++) {
     enemies[i].update();
@@ -49,11 +59,34 @@ function draw() {
   }
 
   for (let i = 0; i < enemies.length; i++) {
-    
+    if (enemies[i].hasClearShotAt(player)) {
+      var calculatedVel;
+      if (enemies[i].velocity > 0) {
+        calculatedVel = -10;
+      } else {
+        calculatedVel = 10;
+      }
+      if (Math.floor(Math.random()*50) === 25) {
+        enemyLasers.push(new enemyLaser(enemies[i].posX, enemies[i].posY, calculatedVel));
+      }
+    }
+  }
+
+  // Draw enemy lasers
+  for (let i = 0; i < enemyLasers.length; i++) {
+    enemyLasers[i].update();
+    enemyLasers[i].show();
+  }
+
+  for (let i = 0; i < enemyLasers.length; i++) {
+    if (enemyLasers[i].offScreen()) {
+      enemyLasers.splice(i, 1);
+    }
   }
 
   // Draw terrain
   stroke(139, 69, 19);
+  noFill();
   beginShape();
   for (let i = 0; i < terrainPoints.length; i++) {
     terrainPoint[i] = vertex(terrainPoints[i].posX, terrainPoints[i].posY);
@@ -92,7 +125,11 @@ function keyPressed() {
     }
   } else {
       if (key === ' ') {
-        // create bullet moving towards enemy ship
+        if (player.facing === "right") {
+          playerLasers.push(new playerLaser(player.posX, player.posY, 20));
+        } else {
+          playerLasers.push(new playerLaser(player.posX - 20, player.posY, -20));
+        }
     }
   }
 }

@@ -1,4 +1,4 @@
-function playerLaser(x, y, v) {
+function enemyLaser(x, y, v) {
   this.posX = x;
   this.posY = y;
   this.velocity = v;
@@ -9,12 +9,12 @@ function playerLaser(x, y, v) {
   }
 
   this.show = function() {
-    fill(255);
+    fill(255, 0, 0);
     noStroke();
     rect(this.posX, this.posY, this.size, this.size / 10);
   }
 
-  this.hitsEnemy = function(enemy) {
+  this.hitsPlayer = function(player) {
 
   }
 
