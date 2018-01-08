@@ -14,8 +14,15 @@ function enemyLaser(x, y, v) {
     rect(this.posX, this.posY, this.size, this.size / 10);
   }
 
-  this.hitsPlayer = function(player) {
-
+  this.hits = function(player) {
+    if (this.posY >= player.posY - 10 && this.posY <= player.posY + 10) {
+      if (this.posX >= player.posX - player.sideLength && this.posX <= player.posX + player.sideLength) {
+        return true;
+      } else
+      return false;
+    } else {
+      return false;
+    }
   }
 
   this.offScreen = function() {

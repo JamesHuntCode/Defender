@@ -54,8 +54,9 @@ function draw() {
 
     // Check if player laser has hit an enemy ship
     for (let j = 0; j < enemies.length; j++) {
-      if (playerLasers[i].hitsEnemy(enemies[j])) {
-        // destroy enemy ship...
+      if (playerLasers[i].hits(enemies[j]) && playerLasers[i].active) {
+        enemies.splice(j, 1);
+        playerLasers[i].active = false;
       }
     }
   }
@@ -78,6 +79,7 @@ function draw() {
       }
       // After calculation, add a level of chance
       if (Math.floor(Math.random() * 100) === 50) {
+        // Make sure enemy is facing player
         if (enemies[i].velocity > 0) {
           if (enemies[i].posX > player.posX) {
             enemyLasers.push(new enemyLaser(enemies[i].posX, enemies[i].posY, calculatedVel));
@@ -92,8 +94,10 @@ function draw() {
   }
 
   // Add more spaceships over time
-  if (Math.floor(Math.random() * 400) === 50) {
-    enemies.push(new enemyShip(width + 20, random(60, height / 2)));
+  if (enemies.length < 5) {
+    if (Math.floor(Math.random() * 100) === 50) {
+      enemies.push(new enemyShip(width + 20, random(60, height / 2)));
+    }
   }
 
   // Draw enemy lasers
@@ -106,6 +110,11 @@ function draw() {
   for (let i = 0; i < enemyLasers.length; i++) {
     if (enemyLasers[i].offScreen()) {
       enemyLasers.splice(i, 1);
+    }
+
+    // Check if enemy laser has hit the player
+    if (enemyLasers[i].hits(player)) {
+      location.reload();
     }
   }
 
