@@ -57,6 +57,7 @@ function draw() {
       if (playerLasers[i].hits(enemies[j]) && playerLasers[i].active) {
         enemies.splice(j, 1);
         playerLasers[i].active = false;
+        playerScore += 100;
       }
     }
   }
@@ -89,6 +90,16 @@ function draw() {
             enemyLasers.push(new enemyLaser(enemies[i].posX, enemies[i].posY, calculatedVel));
           }
         }
+      }
+    }
+
+    // Check if the player has collided with an enemy ship
+    if (enemies[i].touches(player)) {
+      if (player.xVelocity > 0 || player.yVelocity > 0) {
+        enemies.splice(i, 1);
+        playerScore += 50;
+      } else {
+        location.reload();
       }
     }
   }
@@ -145,7 +156,9 @@ function keyPressed() {
   if (key != ' ') {
     switch(keyCode) {
       case UP_ARROW:
-        player.yVelocity = -7;
+        if (player.posY > 65) {
+          player.yVelocity = -7;
+        }
       break;
       case DOWN_ARROW:
         player.yVelocity = 7;

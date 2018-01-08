@@ -49,4 +49,16 @@ function enemyShip(x, y) {
       return false;
     }
   }
+
+  this.touches = function(player) {
+    if (this.posY >= player.posY - 15 && this.posY <= player.posY + 15) {
+      if (this.posX >= player.posX - 10 && this.posX <= player.posX + 10) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
 }
