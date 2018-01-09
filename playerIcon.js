@@ -24,7 +24,7 @@ function playerIcon(x, y) {
   }
 
   this.boundaries = function() {
-    if (this.posY < 65) {
+    if (this.posY <= 65 || this.posY >= height / 1.5 - this.sideLength) {
       this.yVelocity = 0;
     }
 

@@ -22,8 +22,4 @@ function terrainPoint(x, y) {
       return false;
     }
   }
-
-  this.hitsPlayer = function() {
-
-  }
 }

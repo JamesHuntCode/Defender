@@ -7,6 +7,8 @@ var terrainPoints = [];
 var enemies = [];
 var enemyLasers = [];
 
+var stars = [];
+
 function setup() {
   createCanvas(600, 400);
 
@@ -24,6 +26,11 @@ function setup() {
   for (let i = 0; i < 3; i++) {
     var randomY = random(60, height / 2);
     enemies[i] = new enemyShip(width + 20, randomY);
+  }
+
+  // Initialize stars
+  for (let i = 0; i < 50; i++) {
+    stars[i] = new star(random(0, width), random(65, height / 1.5));
   }
 }
 
@@ -95,7 +102,7 @@ function draw() {
 
     // Check if the player has collided with an enemy ship
     if (enemies[i].touches(player)) {
-      if (player.xVelocity > 0 || player.yVelocity > 0) {
+      if (player.xVelocity != 0 || player.yVelocity != 0) {
         enemies.splice(i, 1);
         playerScore += 50;
       } else {
@@ -127,6 +134,13 @@ function draw() {
     if (enemyLasers[i].hits(player)) {
       location.reload();
     }
+  }
+
+  // Draw stars
+  for (let i = 0; i < stars.length; i++) {
+    stars[i].update();
+    stars[i].show();
+    stars[i].boundaries();
   }
 
   // Draw terrain
@@ -161,7 +175,9 @@ function keyPressed() {
         }
       break;
       case DOWN_ARROW:
-        player.yVelocity = 7;
+        if (player.posY < height / 1.5 - player.sideLength) {
+          player.yVelocity = 7;
+        }
       break;
       case LEFT_ARROW:
         player.xVelocity = -7;
